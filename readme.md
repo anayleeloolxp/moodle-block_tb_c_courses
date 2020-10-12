@@ -1,4 +1,7 @@
 # Leeloo LXP Completed Courses Block
+This moodle block shows all the Completed courses for a user. Completed means the courses user progress is 100%.
+
+
 
 Installation Instructions
 =========================
