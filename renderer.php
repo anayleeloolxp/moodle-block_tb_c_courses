@@ -44,7 +44,7 @@ class block_tb_c_courses_renderer extends plugin_renderer_base {
         $html = '';
         // LearningWorks.
 
-        if($config->completed_showasslider == 1){
+        if(@$config->completed_showasslider == 1){
             $this->page->requires->js(new moodle_url($CFG->wwwroot . '/blocks/tb_c_courses/js/jquery.min.js'));
             $this->page->requires->js(new moodle_url($CFG->wwwroot . '/blocks/tb_c_courses/js/owl.carousel.js'));
             if($config->completed_autoslide == 1){
@@ -108,12 +108,12 @@ class block_tb_c_courses_renderer extends plugin_renderer_base {
         $gridsplit = intval(12 / count($courses)); // Added intval to avoid any float.
 
         // Set a minimum size for the course 'cards'.
-        $colsize = intval($config->completed_coursegridwidth) > 0 ? intval($config->completed_coursegridwidth) : BLOCKS_TB_C_COURSES_DEFAULT_COL_SIZE;
+        $colsize = intval(@$config->completed_coursegridwidth) > 0 ? intval($config->completed_coursegridwidth) : BLOCKS_TB_C_COURSES_DEFAULT_COL_SIZE;
         if ($gridsplit < $colsize) {
             $gridsplit = $colsize;
         }
 
-        $courseclass = $config->completed_startgrid == BLOCKS_TB_C_COURSES_STARTGRID_YES ? "grid" : "list";
+        $courseclass = @$config->completed_startgrid == BLOCKS_TB_C_COURSES_STARTGRID_YES ? "grid" : "list";
         $startvalue = $courseclass == "list" ? "12" : $gridsplit;
 
         $listonly = false;
@@ -122,7 +122,7 @@ class block_tb_c_courses_renderer extends plugin_renderer_base {
             $startvalue = 12;
             $courseclass = "list";
         } else {
-            if($config->completed_showasslider == 1){    
+            if(@$config->completed_showasslider == 1){    
                 $html .= '';
             }else{
                 $html .= html_writer::tag('a', 'Change View', array('href' => '#', 'id' => 'box-or-lines',
@@ -139,12 +139,12 @@ class block_tb_c_courses_renderer extends plugin_renderer_base {
             'u.lang, u.timezone, u.lastaccess, u.mnethostid, u.imagealt, r.name AS rolename, r.sortorder, ' .
             'r.shortname AS roleshortname, rn.name AS rolecoursealias';
 
-        if($config->completed_style == 0){
+        if(@$config->completed_style == 0){
             $colorstyle = 'style_light';
         }else{
             $colorstyle = 'style_dark';
         }    
-        if($config->completed_showasslider == 1){    
+        if(@$config->completed_showasslider == 1){    
             $html .= html_writer::start_div('tb_c_courses_list owl-carousel owl-theme '.$colorstyle);
         }else{
             $html .= html_writer::start_div('tb_c_courses_list '.$colorstyle);
