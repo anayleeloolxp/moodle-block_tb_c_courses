@@ -235,12 +235,11 @@ function block_tb_c_courses_get_sorted_courses($showallcourses = false, $categor
 
     foreach ($allcourses as $courseid => $courseall) {
         $category = $DB->get_record('course_categories', array('id' => $courseall->category));
-        if($category){
+        if ($category) {
             $path = trim($category->path) . '/';
-        }else{
+        } else {
             $path = 0;
         }
-        
 
         if ($categoryid == 0) {
             if (!array_key_exists($courseid, $enrolledcourses)) {
@@ -322,7 +321,7 @@ function block_tb_c_courses_build_progress($course, $config) {
     require_once($CFG->dirroot . '/grade/lib.php');
     $completestring = get_string('complete');
 
-    if ($config->completed_progressenabled == BLOCKS_TB_C_COURSES_SHOWGRADES_NO) {
+    if (@$config->completed_progressenabled == BLOCKS_TB_C_COURSES_SHOWGRADES_NO) {
         return '';
     }
 
@@ -364,9 +363,13 @@ function block_tb_c_courses_progress_percent($course) {
 /**
  * Fetch and Update Configration From L
  */
-function updateconfc_courses(){
-    $leeloolxplicense = get_config('block_tb_c_courses')->license;
-    
+function updateconfc_courses() {
+    if (isset(get_config('block_tb_c_courses')->license)) {
+        $leeloolxplicense = get_config('block_tb_c_courses')->license;
+    } else {
+        return;
+    }
+
     $url = 'https://leeloolxp.com/api_moodle.php/?action=page_info';
     $postdata = '&license_key=' . $leeloolxplicense;
     $curl = new curl;
@@ -376,13 +379,13 @@ function updateconfc_courses(){
         'CURLOPT_POST' => 1,
     );
     if (!$output = $curl->post($url, $postdata, $options)) {
-        
+        $falsevar = 0;
     }
     $infoleeloolxp = json_decode($output);
     if ($infoleeloolxp->status != 'false') {
         $leeloolxpurl = $infoleeloolxp->data->install_url;
     } else {
-        
+        $falsevar = 0;
     }
     $url = $leeloolxpurl . '/admin/Theme_setup/get_completed_courses';
     $postdata = '&license_key=' . $leeloolxplicense;
@@ -393,7 +396,7 @@ function updateconfc_courses(){
         'CURLOPT_POST' => 1,
     );
     if (!$output = $curl->post($url, $postdata, $options)) {
-        
+        $falsevar = 0;
     }
     set_config('settingsjson', base64_encode($output), 'block_tb_c_courses');
 }
