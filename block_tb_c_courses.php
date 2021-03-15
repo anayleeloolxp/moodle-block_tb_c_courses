@@ -69,6 +69,15 @@ class block_tb_c_courses extends block_base {
         $leeloolxplicense = get_config('block_tb_c_courses')->license;
         $settingsjson = get_config('block_tb_c_courses')->settingsjson;
         $resposedata = json_decode(base64_decode($settingsjson));
+
+        if (!isset($resposedata->data->completed_courses)) {
+            $this->title = get_string('displayname', 'block_tb_c_courses');
+            $this->content = new stdClass();
+            $this->content->text = '';
+            $this->content->footer = '';
+            return $this->content;
+        }
+
         $settingleeloolxp = $resposedata->data->completed_courses;
 
         if (empty($settingleeloolxp->completed_course_title)) {
